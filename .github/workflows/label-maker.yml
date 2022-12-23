@@ -1,0 +1,27 @@
+name: label-maker
+
+on:
+  push:
+    paths:
+      - '.github/workflows/label-maker.yml'
+      - '.github/labels.yml'
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.2.0
+
+      - name: Run Labeler dry-run
+        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
+        uses: crazy-max/ghaction-github-labeler@v4.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          dry-run: true
+
+      - name: Run Labeler
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: crazy-max/ghaction-github-labeler@v4.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
