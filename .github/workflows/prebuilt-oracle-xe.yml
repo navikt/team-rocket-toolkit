@@ -27,14 +27,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.2.0
 
-      - name: Create Docker image
+      - name: Start and initialize database
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker run --name oracle-build \
             -e ORACLE_RANDOM_PASSWORD=yes \
             -p 1521:1521 -p 5500:5500 \
-            ${{ inputs.original_image_name }}:${{ inputs.original_image_version }}
+            ${{ inputs.original_image_name }}:${{ inputs.original_image_version }} &
+
+      - name: Wait for a while
+        run: sleep 120s
+        shell: bash
+
+      - name: Create Docker image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           docker stop -t 600 oracle-build
           docker commit -m "Image with prebuilt database" oracle-build ${IMAGE_NAME}
           docker rm oracle-build
