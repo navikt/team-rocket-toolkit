@@ -32,7 +32,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker run --name oracle-build \
-            -e ORACLE_RANDOM_PASSWORD=yes \
+            -e ORACLE_PASSWORD=test \
+            -e APP_USER=test \
+            -e APP_USER_PASSWORD=test \
             -p 1521:1521 -p 5500:5500 \
             ${{ inputs.original_image_name }}:${{ inputs.original_image_version }} &
 
