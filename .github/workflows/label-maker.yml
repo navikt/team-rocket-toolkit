@@ -15,13 +15,13 @@ jobs:
 
       - name: Run Labeler dry-run
         if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
-        uses: crazy-max/ghaction-github-labeler@v4.1.0
+        uses: crazy-max/ghaction-github-labeler@v4.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           dry-run: true
 
       - name: Run Labeler
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: crazy-max/ghaction-github-labeler@v4.1.0
+        uses: crazy-max/ghaction-github-labeler@v4.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
